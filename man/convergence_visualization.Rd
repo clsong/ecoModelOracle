@@ -39,6 +39,6 @@ plot <- convergence_visualization(
   species_variable = "prey",
   growth_function = "prey",
   death_function = "prey*predator + prey^2"
- )
+)
 print(plot)
 }

@@ -17,8 +17,3 @@ A numeric value representing the coefficient of variation.
 \description{
 Calculates the coefficient of variation (CV) between two numerical vectors.
 }
-\examples{
-data1 <- c(1, 2, 5, NA, 10)
-data2 <- c(2, 4, 5, 8, NA)
-compute_covariance(data1, data2)
-}

@@ -3,11 +3,6 @@
 #' @param a The first numerical vector.
 #' @param b The second numerical vector.
 #' @return A numeric value representing the coefficient of variation.
-#' @examples
-#' data1 <- c(1, 2, 5, NA, 10)
-#' data2 <- c(2, 4, 5, 8, NA)
-#' compute_covariance(data1, data2)
-#' @export
 compute_covariance <- function(a, b) {
   cov(a, b, use = "complete.obs") / (mean(a, na.rm = T) * mean(b, na.rm = T))
 }
@@ -24,14 +19,14 @@ compute_covariance <- function(a, b) {
 #'   for growth and death.
 #' @examples
 #' set.seed(1010)
-#' validation_statistics(
+#' covariance_statistics(
 #'   example_data,
 #'   species_variable = "prey",
 #'   growth_function = "prey",
 #'   death_function = "prey*predator + prey^2"
 #' )
 #' @export
-validation_statistics <- function(data, species_variable, growth_function,
+covariance_statistics <- function(data, species_variable, growth_function,
                                   death_function, Nbootstraps = 500) {
   z_score <- function(cov_growth, cov_death) {
     abs((mean(cov_growth) - mean(cov_death))) /
@@ -62,6 +57,42 @@ validation_statistics <- function(data, species_variable, growth_function,
     with(z_score(cov_growth, cov_death))
 }
 
+#' @title Calculate Covariance Estimates for Growth and Death
+#' @description Estimates covariances between growth/death variables and a specified species variable.
+#' @param data A data frame containing the necessary variables.
+#' @param species_variable The name of the species variable within the data frame (provided as a string).
+#' @param growth_function The name of the growth function (provided as a string).
+#' @param death_function The name of the death function (provided as a string).
+#' @return A named list containing the estimated covariances:
+#'   * cov_growth: Covariance between the growth variable and the species variable.
+#'   * cov_death: Covariance between the death variable and the species variable.
+#' @examples
+#' covariance_estimate(
+#'   example_data,
+#'   species_variable = "prey",
+#'   growth_function = "prey",
+#'   death_function = "prey*predator + prey^2"
+#' )
+#' @export
+covariance_estimate <- function(data,
+                                species_variable,
+                                growth_function,
+                                death_function) {
+  with(
+    data,
+    c(
+      cov_growth = compute_covariance(
+        eval(parse(text = growth_function)),
+        eval(parse(text = species_variable))
+      ),
+      cov_death = compute_covariance(
+        eval(parse(text = death_function)),
+        eval(parse(text = species_variable))
+      )
+    )
+  )
+}
+
 #' @title Visualize Convergence of Simulated Covariance Ratios
 #' @description Generates a plot demonstrating the convergence of covariance ratios under
 #'   simulated process noise, aiding in analysis of model stability.
@@ -83,7 +114,7 @@ validation_statistics <- function(data, species_variable, growth_function,
 #'   species_variable = "prey",
 #'   growth_function = "prey",
 #'   death_function = "prey*predator + prey^2"
-#'  )
+#' )
 #' print(plot)
 #' @export
 convergence_visualization <- function(data, species_variable,
