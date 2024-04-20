@@ -28,5 +28,6 @@ validation_statistics(
   species_variable = "prey",
   growth_function = "prey",
   death_function = "prey*predator + prey^2"
+)
 ```
 
