@@ -32,7 +32,6 @@ Calculates bootstrapped validation statistics (coefficients of variation)
   using user-provided growth and death functions.
 }
 \examples{
-# Example usage (assuming growth/death functions exist)
 set.seed(1010)
 validation_statistics(
   example_data,

@@ -23,7 +23,6 @@ compute_covariance <- function(a, b) {
 #' @return  A data frame containing z-scores of the bootstrapped coefficients of variation (CoV)
 #'   for growth and death.
 #' @examples
-#' # Example usage (assuming growth/death functions exist)
 #' set.seed(1010)
 #' validation_statistics(
 #'   example_data,
@@ -129,3 +128,14 @@ convergence_visualization <- function(data, species_variable,
     geom_hline(color = "firebrick2", yintercept = 1, linetype = "dashed") +
     theme_bw()
 }
+
+#' An example dataset of ecological time series
+#' @format ## `example_data`
+#' A data frame with 198 row and 3 columns:
+#' \describe{
+#'   \item{time}{Measurement time}
+#'   \item{prey}{Prey abundance}
+#'   \item{predator}{Predator abundance}
+#' }
+#' @source <https://www.nature.com/articles/s41586-019-1857-0>
+"example_data"
