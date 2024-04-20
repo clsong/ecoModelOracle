@@ -1,0 +1,20 @@
+Package: ecoModelOracle
+Type: Package
+Title: Using covariance criteria to (in)validate ecological models
+Version: 0.1.0
+Author: Chuliang Song
+Maintainer: Chuliang Song <clsong.ecology@gmail.com>
+Description: 
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Imports: 
+    magrittr,
+    rsample,
+    dplyr,
+    tidyr,
+    purrr,
+    ggplot2
+Depends: 
+    R (>= 2.10)
