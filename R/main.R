@@ -15,6 +15,8 @@ compute_covariance <- function(a, b) {
 #' @param growth_function Expression of the growth function (provided as a string).
 #' @param death_function Expression of the death function (provided as a string).
 #' @param Nbootstraps The number of bootstrap iterations to perform (default is 500).
+#' @param paired A logical flag (TRUE/FALSE) indicating whether the growth and death
+#'   covariances should be treated as paired for analysis (default is FALSE).
 #' @return  A data frame containing z-scores of the bootstrapped coefficients of variation (CoV)
 #'   for growth and death.
 #' @examples
@@ -26,11 +28,20 @@ compute_covariance <- function(a, b) {
 #'   death_function = "prey*predator + prey^2"
 #' )
 #' @export
-covariance_statistics <- function(data, species_variable, growth_function,
-                                  death_function, Nbootstraps = 500) {
-  z_score <- function(cov_growth, cov_death) {
-    abs((mean(cov_growth) - mean(cov_death))) /
-      sqrt(var(cov_growth) + var(cov_death))
+covariance_statistics <- function(data, species_variable,
+                                  growth_function,
+                                  death_function,
+                                  Nbootstraps = 500,
+                                  paired = F) {
+  z_score <- function(cov_growth, cov_death, paired) {
+    if(paired){
+      diff <- cov_growth - cov_death
+      z_score <- abs(mean(diff))/sd(diff)
+    } else{
+      z_score <- abs((mean(cov_growth) - mean(cov_death))) /
+        sqrt(var(cov_growth) + var(cov_death))
+    }
+    z_score
   }
 
   data %>%
@@ -54,7 +65,7 @@ covariance_statistics <- function(data, species_variable, growth_function,
     })) %>%
     dplyr::select(-splits, -id) %>%
     tidyr::unnest_wider(covariance) %>%
-    with(z_score(cov_growth, cov_death))
+    with(z_score(cov_growth, cov_death, paired))
 }
 
 #' @title Calculate Covariance Estimates for Growth and Death

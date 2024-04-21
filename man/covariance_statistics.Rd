@@ -9,7 +9,8 @@ covariance_statistics(
   species_variable,
   growth_function,
   death_function,
-  Nbootstraps = 500
+  Nbootstraps = 500,
+  paired = F
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ covariance_statistics(
 \item{death_function}{Expression of the death function (provided as a string).}
 
 \item{Nbootstraps}{The number of bootstrap iterations to perform (default is 500).}
+
+\item{paired}{A logical flag (TRUE/FALSE) indicating whether the growth and death
+covariances should be treated as paired for analysis (default is FALSE).}
 }
 \value{
 A data frame containing z-scores of the bootstrapped coefficients of variation (CoV)
